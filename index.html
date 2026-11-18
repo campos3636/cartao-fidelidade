@@ -40,7 +40,7 @@
     <section class="stats"><div class="stat"><label>Clientes cadastrados</label><strong id="total">0</strong></div><div class="stat"><label>Brindes dados</label><strong id="rewards">0</strong></div></section>
     <section class="panel"><div class="toolbar"><div><h2>Meus clientes</h2><p>Um carinho especial para quem está sempre com você.</p></div><input class="search" id="search" placeholder="🔍  Buscar por nome, telefone ou e-mail" aria-label="Buscar clientes"></div><div class="cards" id="cards"></div></section>
     </div>
-    <footer class="update-panel"><p id="current-version">Versão atual: 1.22</p><p id="update-status" role="status">Verificando atualizações...</p><button class="btn ghost" type="button" id="update-app">↻ Atualizar aplicativo</button></footer>
+    <footer class="update-panel"><p id="current-version">Versão atual: 1.23</p><p id="update-status" role="status">Verificando atualizações...</p><button class="btn ghost" type="button" id="update-app">↻ Atualizar aplicativo</button></footer>
   </main>
   <dialog id="dialog"><h2>Novo cliente</h2><p>Preencha os dados para criar um cartão fidelidade.</p><form id="form"><label for="name">Nome</label><input id="name" required maxlength="100" placeholder="Nome do cliente"><label for="phone">Telefone</label><input id="phone" required type="tel" maxlength="30" placeholder="(00) 00000-0000"><label for="email">E-mail (opcional)</label><input id="email" type="email" maxlength="150" placeholder="cliente@email.com"><div class="form-actions"><button type="button" class="btn ghost" id="cancel">Cancelar</button><button class="btn" type="submit">Salvar cliente</button></div></form></dialog>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -53,7 +53,7 @@
     function message(text){$('message').textContent=text;$('message').hidden=false}
     function updatedPageUrl(href,version){const url=new URL(href);url.searchParams.set('_atualizar',String(version));return url.toString()}
     $('update-app').onclick=()=>{if(confirm('Atualizar agora? Informações ainda não salvas nesta tela serão perdidas.'))location.replace(updatedPageUrl(location.href,Date.now()))};
-    const APP_VERSION='1.22';
+    const APP_VERSION='1.23';
     $('current-version').textContent='Versão atual: '+APP_VERSION;
     function isNewerVersion(current,latest){if(!/^\d+(?:\.\d+)*$/.test(current)||typeof latest!=='string'||!/^\d+(?:\.\d+)*$/.test(latest))return false;const a=current.split('.').map(Number),b=latest.split('.').map(Number);for(let i=0;i<Math.max(a.length,b.length);i++){if((b[i]||0)!==(a[i]||0))return (b[i]||0)>(a[i]||0)}return false}
     async function checkForUpdates(){try{const url=new URL('version.json',location.href);url.searchParams.set('_verificar',Date.now());const response=await fetch(url,{cache:'no-store'});if(!response.ok)throw new Error('Falha ao verificar');const data=await response.json();if(typeof data.version!=='string'||!/^\d+(?:\.\d+)*$/.test(data.version))throw new Error('Versão inválida');if(isNewerVersion(APP_VERSION,data.version)){$('update-status').textContent='Atualização disponível';$('update-app').textContent='↻ Atualizar para '+data.version;$('update-app').classList.remove('ghost')}else{$('update-status').textContent='Aplicativo atualizado';$('update-app').textContent='↻ Atualizar aplicativo';$('update-app').classList.add('ghost')}}catch{$('update-status').textContent='Não foi possível verificar atualizações. Confira sua internet.'}}
