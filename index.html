@@ -22,7 +22,7 @@
 <body>
   <header><div class="brand"><span class="logo-mark" aria-hidden="true">T<i>nat</i></span><div>natbarrostattoo<small>seu cartão fidelidade</small></div></div><span class="header-label">Área de gerenciamento</span></header>
   <main class="wrap">
-    <div class="notice" id="message" role="status">Versão de teste: use dados fictícios até concluir a configuração e verificar a segurança.</div>
+    <div class="notice" id="message" role="status" hidden></div>
     <dialog id="signup-result-dialog" aria-labelledby="signup-result-title" aria-describedby="signup-result-text"><h2 id="signup-result-title">Resultado do cadastro</h2><p id="signup-result-text" role="status"></p><div id="open-inbox" hidden style="margin:20px 0"><a class="btn secondary" href="https://mail.google.com/" target="_blank" rel="noopener noreferrer">Abrir Gmail</a></div><div class="form-actions"><button class="btn" id="signup-result-close" type="button">Entendi</button></div></dialog>
     <section class="panel" id="auth"><div class="auth-columns"><div><h2>Entrar</h2><p>Acesse sua conta em qualquer aparelho.</p><form id="auth-form"><label for="auth-email">E-mail</label><input id="auth-email" type="email" required autocomplete="email"><label for="auth-password">Senha</label><input id="auth-password" type="password" required autocomplete="current-password"><button class="btn" type="submit">Entrar</button></form></div><div class="auth-create"><h2>Criar conta</h2><p>Comece a acompanhar a fidelidade dos seus clientes.</p><form id="signup-form"><label for="signup-name">Nome de usuário (3 a 30 letras sem acento, números ou _)</label><input id="signup-name" required minlength="3" maxlength="30" pattern="[A-Za-z0-9_]{3,30}" autocomplete="nickname"><label for="signup-email">E-mail</label><input id="signup-email" type="email" required autocomplete="email"><label for="signup-password">Senha</label><input id="signup-password" type="password" required minlength="6" autocomplete="new-password"><button class="btn secondary" type="submit">Criar conta</button></form></div></div></section>
     <div id="dashboard" hidden>
@@ -42,7 +42,7 @@
     const defaultEmailTemplate='Olá, {nome}! Você está com {sessoes} sessões no seu cartão fidelidade. Vamos marcar sua próxima sessão? :D';
     function whatsappNumber(phone){let digits=String(phone).replace(/\D/g,'');if(digits.length===10||digits.length===11)digits='55'+digits;return /^55\d{10,11}$/.test(digits)?digits:null}
     const $=id=>document.getElementById(id), escapeHtml=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    function message(text){$('message').textContent=text}
+    function message(text){$('message').textContent=text;$('message').hidden=false}
     function signupErrorMessage(error){return /database error saving new user/i.test(error.message||'')?'O nome de usuário pode já estar em uso. Tente outro nome; se o erro continuar, pode haver outra falha no cadastro.':'Não foi possível criar a conta: '+error.message}
     function signupResult(text){$('signup-result-text').textContent=text;if(!$('signup-result-dialog').open)$('signup-result-dialog').showModal()}
     $('signup-result-close').onclick=()=>$('signup-result-dialog').close();
